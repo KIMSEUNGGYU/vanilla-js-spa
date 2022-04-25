@@ -5,12 +5,14 @@ const router = {
   notFoundComponent: () => {},
   setNotFound: (component) => {
     router.notFoundComponent = component;
+    return router;
   },
   addRoute: (path, component) => {
     router.routes.push({
       path,
       component,
     });
+    return router;
   },
   changeRoute: (url) => {
     history.pushState(null, null, url);
