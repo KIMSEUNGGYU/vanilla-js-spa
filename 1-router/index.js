@@ -17,7 +17,10 @@ $('header > nav > ul').addEventListener('click', (event) => {
 });
 
 // router 추가
-router.addRoute('/1-router/', pages.home) //
+router //
+  .addRoute('/1-router/', pages.home)
   .addRoute('/1-router/posts', pages.posts)
+  .addRoute('/1-router/posts/:id', pages.post)
+  .addRoute('/1-router/posts/:id/:anotherId', pages.another)
   .setNotFound(pages.notFound)
   .route();

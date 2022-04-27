@@ -7,6 +7,16 @@ export default (target) => {
     target.textContent = 'Posts Page';
   };
 
+  const post = (params) => {
+    const { id } = params;
+    target.textContent = `PostDetail Page - ${id}`;
+  };
+
+  const another = (params) => {
+    const { id, anotherId } = params;
+    target.textContent = `PostDetail Page - id: ${id} / another: ${anotherId}`;
+  };
+
   const notFound = () => {
     target.textContent = '404 - Not Found Page';
   };
@@ -14,6 +24,8 @@ export default (target) => {
   return {
     home,
     posts,
+    post,
+    another,
     notFound,
   };
 };
