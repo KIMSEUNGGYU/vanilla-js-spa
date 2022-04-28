@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "watch": "jest --watchAll",
+    "test": "jest --env=jsdom",
+    "watch": "jest --env=jsdom --watchAll",
     "start": "webpack serve"
   },
   "keywords": [],
@@ -21,6 +21,8 @@
     "css-loader": "^6.7.1",
     "html-webpack-plugin": "^5.5.0",
     "jest": "^28.0.2",
+    "jest-environment-jsdom": "^28.0.2",
+    "jest-plugin-context": "^2.9.0",
     "style-loader": "^3.3.1",
     "ts-jest": "^27.1.4",
     "ts-loader": "^9.2.8",
