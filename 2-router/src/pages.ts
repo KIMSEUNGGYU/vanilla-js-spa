@@ -1,4 +1,10 @@
-export default (target: HTMLElement) => {
+import { Target } from './types';
+
+export default (target: Target) => {
+  // if (!target) {
+  //   return {};
+  // }
+
   const home = () => {
     target.textContent = 'Home Page';
   };
