@@ -1,4 +1,4 @@
-import { Target } from './types';
+import { Target } from '../types';
 
 export default (target: Target) => {
   // if (!target) {

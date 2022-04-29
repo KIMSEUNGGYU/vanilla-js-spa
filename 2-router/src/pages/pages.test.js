@@ -1,6 +1,6 @@
-import { $ } from './utils/dom';
+import { $ } from '../utils/dom';
 
-import Pages from './pages';
+import Pages from '.';
 
 describe('pages', () => {
   context('render', () => {

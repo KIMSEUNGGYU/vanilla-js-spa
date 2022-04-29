@@ -1,4 +1,4 @@
-import Router from './router';
+import Router from '.';
 
 describe('router', () => {
   const componentMock = jest.fn();
