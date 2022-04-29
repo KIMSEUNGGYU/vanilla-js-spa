@@ -42,9 +42,7 @@ export default class Router implements RouterImpl {
   route = (): void => {
     const { pathname } = location;
 
-    console.log('ss', this.router);
-
-    const currentRouter = this.router?.find((route) => route.path === pathname);
+    const currentRouter = this.router.find((route) => route.path === pathname);
 
     if (!currentRouter) {
       this.notFoundComponent();
