@@ -3,8 +3,11 @@ import { $ } from './utils/dom';
 import { Target } from './types';
 
 import Pages from './pages';
+import Router, { CHANGE_ROUTE_EVENT } from './router';
 
 const pages = Pages($('#root') as Target);
+
+const router = new Router();
 
 $('header > nav > ul')?.addEventListener('click', (event: any) => {
   const { target } = event;
@@ -12,17 +15,16 @@ $('header > nav > ul')?.addEventListener('click', (event: any) => {
   if (target.matches('button[data-navigate]')) {
     const { navigate } = target?.dataset;
 
-    console.log(navigate);
+    router.changeRoute(navigate);
   }
 });
 
-pages.home();
+router //
+  .addRoute('/', pages.home)
+  .addRoute('/posts', pages.posts)
+  .setNotFound(pages.notFound)
+  .route();
 
-// // router 추가
-// router //
-//   .addRoute('/1-router/', pages.home)
-//   .addRoute('/1-router/posts', pages.posts)
-//   .addRoute('/1-router/posts/:id', pages.post)
-//   .addRoute('/1-router/posts/:id/:anotherId', pages.another)
-//   .setNotFound(pages.notFound)
-//   .route();
+// ❓ THINK : 라우터 이벤트 위치..
+window.addEventListener(CHANGE_ROUTE_EVENT, router.route);
+window.addEventListener('popstate', router.route); // 뒤로 가기 이벤트 등록
