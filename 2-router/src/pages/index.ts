@@ -1,10 +1,6 @@
 import { Target } from '../types';
 
 export default (target: Target) => {
-  // if (!target) {
-  //   return {};
-  // }
-
   const home = () => {
     target.textContent = 'Home Page';
   };
@@ -13,8 +9,14 @@ export default (target: Target) => {
     target.textContent = 'Posts Page';
   };
 
-  const post = () => {
-    target.textContent = 'Post Page';
+  const post = (params: { id: string }) => {
+    const { id } = params;
+    target.textContent = `Post Page - id ${id}`;
+  };
+
+  const nestedPost = (params: { id: string; nestedId: string }) => {
+    const { id, nestedId } = params;
+    target.textContent = `Post Page - id ${id}, nestedId: ${nestedId}`;
   };
 
   const notFound = () => {
@@ -25,6 +27,7 @@ export default (target: Target) => {
     home,
     posts,
     post,
+    nestedPost,
     notFound,
   };
 };

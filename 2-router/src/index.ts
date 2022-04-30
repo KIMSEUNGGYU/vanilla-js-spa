@@ -22,6 +22,8 @@ $('header > nav > ul')?.addEventListener('click', (event: any) => {
 router //
   .addRoute('/', pages.home)
   .addRoute('/posts', pages.posts)
+  .addRoute('/posts/:id', pages.post)
+  .addRoute('/posts/:id/:nestedId', pages.nestedPost)
   .setNotFound(pages.notFound)
   .route();
 
