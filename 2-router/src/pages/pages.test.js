@@ -24,7 +24,13 @@ describe('pages', () => {
     it('post 호출 시, post page 가 렌더링된다.', () => {
       pages.post({ id: 1 });
 
-      expect($target.textContent).toBe('Post Page - id 1');
+      expect($target.textContent).toBe('Post Page - id: 1');
+    });
+
+    it('nestedPost 호출 시, nestedPost page 가 렌더링된다.', () => {
+      pages.nestedPost({ id: 1, nestedId: 'test' });
+
+      expect($target.textContent).toBe('Post Page - id: 1, nestedId: test');
     });
 
     it('notFound', () => {

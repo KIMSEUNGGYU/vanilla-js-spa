@@ -11,12 +11,12 @@ export default (target: Target) => {
 
   const post = (params: { id: string }) => {
     const { id } = params;
-    target.textContent = `Post Page - id ${id}`;
+    target.textContent = `Post Page - id: ${id}`;
   };
 
   const nestedPost = (params: { id: string; nestedId: string }) => {
     const { id, nestedId } = params;
-    target.textContent = `Post Page - id ${id}, nestedId: ${nestedId}`;
+    target.textContent = `Post Page - id: ${id}, nestedId: ${nestedId}`;
   };
 
   const notFound = () => {
