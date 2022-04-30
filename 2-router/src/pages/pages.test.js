@@ -9,22 +9,22 @@ describe('pages', () => {
     const $target = $('#root');
     const pages = Pages($target);
 
-    it('home', () => {
+    it('home 호출 시, home page 가 렌더링된다.', () => {
       pages.home();
 
       expect($target.textContent).toBe('Home Page');
     });
 
-    it('posts', () => {
+    it('posts 호출 시, posts page 가 렌더링된다.', () => {
       pages.posts();
 
       expect($target.textContent).toBe('Posts Page');
     });
 
-    it('post', () => {
-      pages.post();
+    it('post 호출 시, post page 가 렌더링된다.', () => {
+      pages.post({ id: 1 });
 
-      expect($target.textContent).toBe('Post Page');
+      expect($target.textContent).toBe('Post Page - id 1');
     });
 
     it('notFound', () => {

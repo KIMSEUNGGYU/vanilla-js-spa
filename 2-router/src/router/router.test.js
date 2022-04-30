@@ -39,10 +39,6 @@ describe('router', () => {
 
     // ❓ router 객체의 router 속성이 private 인 경우 test 는 어떻게 할까?
     expect(router.router.length).toBe(2);
-    expect(router.router).toEqual([
-      { path: '/', component: componentMock },
-      { path: '/posts', component: componentMock },
-    ]);
   });
 
   it('changeRoute 호출 시, pushState 및 이벤트를 발생한다.', () => {
