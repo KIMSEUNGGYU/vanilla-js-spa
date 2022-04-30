@@ -24,6 +24,8 @@ router //
   .addRoute('/posts', pages.posts)
   .addRoute('/posts/:id', pages.post)
   .addRoute('/posts/:id/:nestedId', pages.nestedPost)
+  .addRoute('/users', pages.users)
+  .addRoute('/users/:id', pages.user)
   .setNotFound(pages.notFound)
   .route();
 

@@ -59,6 +59,13 @@ export default class Router implements RouterImpl {
   route = (): void => {
     const { pathname } = location;
 
+    // query
+    const searchQuery = new URLSearchParams(window.location.search);
+    const query: DynamicObjectType = {};
+    for (const [key, value] of searchQuery) {
+      query[key] = value;
+    }
+
     const currentRouter = this.router.find((route) => route.testRegExp.test(pathname));
     if (!currentRouter) {
       this.notFoundComponent();
@@ -79,7 +86,12 @@ export default class Router implements RouterImpl {
       }
     }
 
-    currentRouter.component(urlParams);
+    const _location = {
+      params: urlParams,
+      query,
+    };
+
+    currentRouter.component(_location);
   };
 }
 
