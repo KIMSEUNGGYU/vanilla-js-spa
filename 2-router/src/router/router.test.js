@@ -14,13 +14,14 @@ describe('router', () => {
     jest.spyOn(router, 'notFoundComponent');
   });
 
-  // ❓ THINK - path가 변경되는 것을 테스트하기 위한 코드, 더 좋은 방법은 없을까?
-  function changePath(path) {
+  // ❓ THINK - path, query가 변경되는 것을 테스트하기 위한 코드, 더 좋은 방법은 없을까?
+  function changePath(path = {}, query = {}) {
     delete window.location;
     window.location = {};
     Object.defineProperty(window, 'location', {
       value: {
         pathname: path,
+        search: query,
       },
     });
   }
@@ -30,7 +31,7 @@ describe('router', () => {
 
     router.setNotFound(componentMock);
 
-    // ❓ 함수 값 비교할 때 어떤 matcher 를 사용해야하는지
+    // ❓ THINK - 함수 값 비교할 때 어떤 matcher 를 사용해야하는지
     expect(router.notFoundComponent).toBe(componentMock);
   });
 
@@ -41,7 +42,7 @@ describe('router', () => {
       .addRoute('/', componentMock)
       .addRoute('/posts', componentMock);
 
-    // ❓ router 객체의 router 속성이 private 인 경우 test 는 어떻게 할까?
+    // ❓ THINK - router 객체의 router 속성이 private 인 경우 test 는 어떻게 할까?
     expect(router.router.length).toBe(2);
   });
 
@@ -80,7 +81,10 @@ describe('router', () => {
       router.route();
 
       expect(componentMock).toBeCalledTimes(1);
-      expect(componentMock).toBeCalledWith({});
+      expect(componentMock).toBeCalledWith({
+        params: {},
+        query: {},
+      });
     });
 
     it('url이 "/posts" 인 경우 해당 컴포넌트를 호출한다.', () => {
@@ -90,7 +94,10 @@ describe('router', () => {
       router.route();
 
       expect(componentMock).toBeCalledTimes(1);
-      expect(componentMock).toBeCalledWith({});
+      expect(componentMock).toBeCalledWith({
+        params: {},
+        query: {},
+      });
     });
 
     it('url이 "/posts/1" (param) 인 경우 해당 컴포넌트를 호출한다.', () => {
@@ -100,7 +107,10 @@ describe('router', () => {
       router.route();
 
       expect(componentMock).toBeCalledTimes(1);
-      expect(componentMock).toBeCalledWith({ id: '1' });
+      expect(componentMock).toBeCalledWith({
+        params: { id: '1' },
+        query: {},
+      });
     });
 
     it('url이 "/posts/1/test" (중첩 param) 인 경우 해당 컴포넌트를 호출한다.', () => {
@@ -110,7 +120,13 @@ describe('router', () => {
       router.route();
 
       expect(componentMock).toBeCalledTimes(1);
-      expect(componentMock).toBeCalledWith({ id: '1', nestedId: 'test' });
+      expect(componentMock).toBeCalledWith({
+        params: {
+          id: '1',
+          nestedId: 'test',
+        },
+        query: {},
+      });
     });
 
     it('url이 "/posts/1/2" (중첩 param) 인 경우 해당 컴포넌트를 호출한다.', () => {
@@ -120,7 +136,75 @@ describe('router', () => {
       router.route();
 
       expect(componentMock).toBeCalledTimes(1);
-      expect(componentMock).toBeCalledWith({ id: '1', nestedId: '2' });
+      expect(componentMock).toBeCalledWith({
+        params: {
+          id: '1',
+          nestedId: '2',
+        },
+        query: {},
+      });
+    });
+
+    it('url이 "/users" 인 경우 해당 컴포넌트를 호출한다.', () => {
+      router.addRoute('/users', componentMock);
+      changePath('/users');
+
+      router.route();
+
+      expect(componentMock).toBeCalledTimes(1);
+      expect(componentMock).toBeCalledWith({
+        params: {},
+        query: {},
+      });
+    });
+
+    it('url이 "/users?username=gyu" 인 경우 해당 컴포넌트를 호출한다.', () => {
+      router.addRoute('/users', componentMock);
+      changePath('/users', '?username=gyu');
+
+      router.route();
+
+      expect(componentMock).toBeCalledTimes(1);
+      expect(componentMock).toBeCalledWith({
+        params: {},
+        query: {
+          username: 'gyu',
+        },
+      });
+    });
+
+    it('url이 "/users?username=gyu&age=28" 인 경우 해당 컴포넌트를 호출한다.', () => {
+      router.addRoute('/users', componentMock);
+      changePath('/users', '?username=gyu&age=28');
+
+      router.route();
+
+      expect(componentMock).toBeCalledTimes(1);
+      expect(componentMock).toBeCalledWith({
+        params: {},
+        query: {
+          username: 'gyu',
+          age: '28',
+        },
+      });
+    });
+
+    it('url이 "/users?username=gyu&age=28" 인 경우 해당 컴포넌트를 호출한다.', () => {
+      router.addRoute('/users/:testId', componentMock);
+      changePath('/users/1', '?username=gyu&age=28');
+
+      router.route();
+
+      expect(componentMock).toBeCalledTimes(1);
+      expect(componentMock).toBeCalledWith({
+        params: {
+          testId: '1',
+        },
+        query: {
+          username: 'gyu',
+          age: '28',
+        },
+      });
     });
   });
 
