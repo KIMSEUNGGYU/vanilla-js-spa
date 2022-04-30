@@ -68,11 +68,15 @@ export default class Router implements RouterImpl {
     const urlParams: DynamicObjectType = {};
     if (currentRouter.params.length !== 0) {
       const matches = pathname.match(currentRouter.testRegExp);
-      matches?.shift();
-      matches?.forEach((paramValue, index) => {
-        const paramName = currentRouter.params[index];
-        urlParams[paramName] = paramValue;
-      });
+      // ❓ THINK : 테스트 커버리지를 검사할 때  matches?.shift 쓰면 안되어서 if문 안으로 검사함.
+      // 이럴 경우 어떻게 처리하는게 좋을까?
+      if (matches) {
+        matches.shift();
+        matches.forEach((paramValue, index) => {
+          const paramName = currentRouter.params[index];
+          urlParams[paramName] = paramValue;
+        });
+      }
     }
 
     currentRouter.component(urlParams);

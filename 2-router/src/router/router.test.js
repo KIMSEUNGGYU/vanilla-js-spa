@@ -7,13 +7,17 @@ describe('router', () => {
   let router;
 
   beforeEach(() => {
-    jest.clearAllMocks();
     router = new Router();
     history.pushState = pushStateMock;
     window.dispatchEvent = dispatchEventMock;
+    jest.clearAllMocks();
+    jest.spyOn(router, 'notFoundComponent');
   });
 
+  // ❓ THINK - path가 변경되는 것을 테스트하기 위한 코드, 더 좋은 방법은 없을까?
   function changePath(path) {
+    delete window.location;
+    window.location = {};
     Object.defineProperty(window, 'location', {
       value: {
         pathname: path,
@@ -51,7 +55,6 @@ describe('router', () => {
 
   context('route 호출 시 - router 가 있는 경우', () => {
     it('브라우저의 url 과 등록된 path가 같은 경우 path 에 맞는 컴포넌트를 보여준다.', () => {
-      jest.spyOn(router, 'notFoundComponent');
       router.addRoute('/', componentMock);
       changePath('/');
 
@@ -61,7 +64,6 @@ describe('router', () => {
     });
 
     it('브라우저의 url 과 등록된 path가 다른 경우 notFoundComponent 호출한다.', () => {
-      jest.spyOn(router, 'notFoundComponent');
       router.addRoute('/posts', componentMock);
       changePath('/');
 
@@ -70,11 +72,60 @@ describe('router', () => {
       expect(router.notFoundComponent).toBeCalledTimes(1);
       expect(componentMock).not.toBeCalled();
     });
+
+    it('url이 "/" 인 경우 해당 컴포넌트를 호출한다.', () => {
+      router.addRoute('/', componentMock);
+      changePath('/');
+
+      router.route();
+
+      expect(componentMock).toBeCalledTimes(1);
+      expect(componentMock).toBeCalledWith({});
+    });
+
+    it('url이 "/posts" 인 경우 해당 컴포넌트를 호출한다.', () => {
+      router.addRoute('/posts', componentMock);
+      changePath('/posts');
+
+      router.route();
+
+      expect(componentMock).toBeCalledTimes(1);
+      expect(componentMock).toBeCalledWith({});
+    });
+
+    it('url이 "/posts/1" (param) 인 경우 해당 컴포넌트를 호출한다.', () => {
+      router.addRoute('/posts/:id', componentMock);
+      changePath('/posts/1');
+
+      router.route();
+
+      expect(componentMock).toBeCalledTimes(1);
+      expect(componentMock).toBeCalledWith({ id: '1' });
+    });
+
+    it('url이 "/posts/1/test" (중첩 param) 인 경우 해당 컴포넌트를 호출한다.', () => {
+      router.addRoute('/posts/:id/:nestedId', componentMock);
+      changePath('/posts/1/test');
+
+      router.route();
+
+      expect(componentMock).toBeCalledTimes(1);
+      expect(componentMock).toBeCalledWith({ id: '1', nestedId: 'test' });
+    });
+
+    it('url이 "/posts/1/2" (중첩 param) 인 경우 해당 컴포넌트를 호출한다.', () => {
+      router.addRoute('/posts/:id/:nestedId', componentMock);
+      changePath('/posts/1/2');
+
+      router.route();
+
+      expect(componentMock).toBeCalledTimes(1);
+      expect(componentMock).toBeCalledWith({ id: '1', nestedId: '2' });
+    });
   });
 
   context('route 호출 시 - router 에 등록되어 있지 않는 경우,', () => {
     it('router 가 없다면 notFoundComponent 를 호출한다.', () => {
-      jest.spyOn(router, 'notFoundComponent');
       changePath('/bad-url');
 
       router.route();
