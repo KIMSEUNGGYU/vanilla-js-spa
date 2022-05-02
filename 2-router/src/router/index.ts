@@ -1,6 +1,6 @@
 import { Obj } from '../types';
 
-export const CHANGE_ROUTE_EVENT = 'urlChange';
+const CHANGE_ROUTE_EVENT = 'urlChange';
 interface RouterImpl {
   setNotFound(component: () => void): Router;
   addRoute(path: string, component: (parmas?: any) => void): Router;
@@ -18,6 +18,8 @@ export default class Router implements RouterImpl {
   constructor() {
     this.router = [];
     this.notFoundComponent = () => {};
+    window.addEventListener(CHANGE_ROUTE_EVENT, this.route);
+    window.addEventListener('popstate', this.route); // 뒤로 가기 이벤트 등록
   }
 
   notFoundComponent: () => void;
@@ -92,7 +94,3 @@ export default class Router implements RouterImpl {
     currentRouter.component(_location);
   };
 }
-
-// ❓ THINK : 여기에다가 하는 게 좋아 보이는데.. 음..
-// window.addEventListener(CHANGE_ROUTE_EVENT, router.route);
-// window.addEventListener('popstate', router.route); // 뒤로 가기 이벤트 등록
