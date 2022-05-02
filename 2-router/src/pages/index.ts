@@ -1,9 +1,6 @@
 import { Target } from '../types';
 
-type LocationType = {
-  params: any;
-  query: any;
-};
+import { LocationType } from '../types';
 
 export default (target: Target) => {
   const getParamQueryText = (text: string, params: any, query: any): string => {
@@ -27,12 +24,12 @@ export default (target: Target) => {
     target.textContent = 'Posts Page';
   };
 
-  const post = ({ params, query }: LocationType) => {
+  const post = ({ params }: LocationType) => {
     const { id } = params;
     target.textContent = `Post Page - id: ${id}`;
   };
 
-  const nestedPost = ({ params, query }: LocationType) => {
+  const nestedPost = ({ params }: LocationType) => {
     const { id, nestedId } = params;
     target.textContent = `Post Page - id: ${id}, nestedId: ${nestedId}`;
   };

@@ -1,9 +1,9 @@
-import { Obj } from '../types';
+import { Obj, Component } from '../types';
 
 const CHANGE_ROUTE_EVENT = 'urlChange';
 interface RouterImpl {
-  setNotFound(component: () => void): Router;
-  addRoute(path: string, component: (parmas?: any) => void): Router;
+  setNotFound(component: Component): Router;
+  addRoute(path: string, component: Component): Router;
   changeRoute(url: string): void;
   route(): void;
 }
@@ -13,6 +13,7 @@ type RouterType = {
   component: (location?: any) => void;
   params: string[];
 };
+
 export default class Router implements RouterImpl {
   router: RouterType[];
   constructor() {
@@ -59,7 +60,7 @@ export default class Router implements RouterImpl {
     return this;
   };
 
-  addRoute = (path: string, component: () => void): Router => {
+  addRoute = (path: string, component: Component): Router => {
     // params 제공
     const params: string[] = [];
 
