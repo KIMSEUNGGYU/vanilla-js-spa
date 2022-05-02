@@ -24,17 +24,17 @@ export default (target: Target) => {
     target.textContent = 'Posts Page';
   };
 
-  const post = ({ params }: LocationType) => {
+  const post = ({ params }: any) => {
     const { id } = params;
     target.textContent = `Post Page - id: ${id}`;
   };
 
-  const nestedPost = ({ params }: LocationType) => {
+  const nestedPost = ({ params }: any) => {
     const { id, nestedId } = params;
     target.textContent = `Post Page - id: ${id}, nestedId: ${nestedId}`;
   };
 
-  const users = ({ params, query }: LocationType) => {
+  const users = ({ params, query }: any) => {
     let text = `Users Page - params: `;
 
     text = getParamQueryText(text, params, query);
@@ -42,7 +42,7 @@ export default (target: Target) => {
     target.textContent = text;
   };
 
-  const user = ({ params, query }: LocationType) => {
+  const user = ({ params, query }: any) => {
     let text = `User Page - params: `;
 
     text = getParamQueryText(text, params, query);
