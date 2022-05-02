@@ -1,5 +1,6 @@
-export const CHANGE_ROUTE_EVENT = 'urlChange';
+import { Obj } from '../types';
 
+export const CHANGE_ROUTE_EVENT = 'urlChange';
 interface RouterImpl {
   setNotFound(component: () => void): Router;
   addRoute(path: string, component: (parmas?: any) => void): Router;
@@ -12,18 +13,14 @@ type RouterType = {
   component: (params?: any) => void;
   params: string[];
 };
-
-type DynamicObjectType = {
-  [key: string]: string;
-};
-
 export default class Router implements RouterImpl {
   router: RouterType[];
-  notFoundComponent: () => void;
   constructor() {
     this.router = [];
     this.notFoundComponent = () => {};
   }
+
+  notFoundComponent: () => void;
 
   setNotFound = (component: () => void): Router => {
     this.notFoundComponent = component;
@@ -34,7 +31,7 @@ export default class Router implements RouterImpl {
     // params 제공
     const params: string[] = [];
 
-    // params
+    // parse params
     const parsedParam = path
       .replace(/:(\w+)/g, (_, param) => {
         params.push(param); // param 추가하고
@@ -61,7 +58,7 @@ export default class Router implements RouterImpl {
 
     // query
     const searchQuery = new URLSearchParams(window.location.search);
-    const query: DynamicObjectType = {};
+    const query: Obj = {};
     for (const [key, value] of searchQuery) {
       query[key] = value;
     }
@@ -72,7 +69,8 @@ export default class Router implements RouterImpl {
       return;
     }
 
-    const urlParams: DynamicObjectType = {};
+    // parse params
+    const urlParams: Obj = {};
     if (currentRouter.params.length !== 0) {
       const matches = pathname.match(currentRouter.testRegExp);
       // ❓ THINK : 테스트 커버리지를 검사할 때  matches?.shift 쓰면 안되어서 if문 안으로 검사함.
