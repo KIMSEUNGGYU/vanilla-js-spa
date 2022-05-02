@@ -26,35 +26,47 @@ describe('router', () => {
     });
   }
 
-  it('setNotFound 호출 시, router 의 notFoundComponent 가 변경된다.', () => {
-    router.notFoundComponent = null;
+  context('public function 유닛 테스트', () => {
+    it('setNotFound 호출 시, router 의 notFoundComponent 가 변경된다.', () => {
+      router.notFoundComponent = null;
 
-    router.setNotFound(componentMock);
+      router.setNotFound(componentMock);
 
-    // ❓ THINK - 함수 값 비교할 때 어떤 matcher 를 사용해야하는지
-    expect(router.notFoundComponent).toBe(componentMock);
+      // ❓ THINK - 함수 값 비교할 때 어떤 matcher 를 사용해야하는지
+      expect(router.notFoundComponent).toBe(componentMock);
+    });
+
+    it('addRoute 호출 시, router 의 route 가 추가된다.', () => {
+      expect(router.router.length).toBe(0);
+
+      router //
+        .addRoute('/', componentMock)
+        .addRoute('/posts', componentMock);
+
+      // ❓ THINK - router 객체의 router 속성이 private 인 경우 test 는 어떻게 할까?
+      expect(router.router.length).toBe(2);
+    });
+
+    it('changeRoute 호출 시, pushState 및 이벤트를 발생한다.', () => {
+      router.changeRoute('/');
+
+      expect(pushStateMock).toBeCalledTimes(1);
+      expect(pushStateMock).toBeCalledWith(null, '', '/');
+      expect(dispatchEventMock).toBeCalledTimes(1);
+    });
   });
 
-  it('addRoute 호출 시, router 의 route 가 추가된다.', () => {
-    expect(router.router.length).toBe(0);
+  context('route function 유닛 테스트 - router 에 등록되어 있지 않는 경우,', () => {
+    it('router 가 없다면 notFoundComponent 를 호출한다.', () => {
+      changePath('/bad-url');
 
-    router //
-      .addRoute('/', componentMock)
-      .addRoute('/posts', componentMock);
+      router.route();
 
-    // ❓ THINK - router 객체의 router 속성이 private 인 경우 test 는 어떻게 할까?
-    expect(router.router.length).toBe(2);
+      expect(router.notFoundComponent).toBeCalledTimes(1);
+    });
   });
 
-  it('changeRoute 호출 시, pushState 및 이벤트를 발생한다.', () => {
-    router.changeRoute('/');
-
-    expect(pushStateMock).toBeCalledTimes(1);
-    expect(pushStateMock).toBeCalledWith(null, '', '/');
-    expect(dispatchEventMock).toBeCalledTimes(1);
-  });
-
-  context('route 호출 시 - router 가 있는 경우', () => {
+  context('route function 유닛 테스트 - router 에 등록된 경우', () => {
     it('브라우저의 url 과 등록된 path가 같은 경우 path 에 맞는 컴포넌트를 보여준다.', () => {
       router.addRoute('/', componentMock);
       changePath('/');
@@ -73,7 +85,9 @@ describe('router', () => {
       expect(router.notFoundComponent).toBeCalledTimes(1);
       expect(componentMock).not.toBeCalled();
     });
+  });
 
+  context('route function 유닛테스트 - 유효한 url route 테스트', () => {
     it('url이 "/" 인 경우 해당 컴포넌트를 호출한다.', () => {
       router.addRoute('/', componentMock);
       changePath('/');
@@ -205,16 +219,6 @@ describe('router', () => {
           age: '28',
         },
       });
-    });
-  });
-
-  context('route 호출 시 - router 에 등록되어 있지 않는 경우,', () => {
-    it('router 가 없다면 notFoundComponent 를 호출한다.', () => {
-      changePath('/bad-url');
-
-      router.route();
-
-      expect(router.notFoundComponent).toBeCalledTimes(1);
     });
   });
 });
