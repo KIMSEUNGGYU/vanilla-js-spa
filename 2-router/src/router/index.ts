@@ -16,6 +16,7 @@ type RouterType = {
 
 export default class Router implements RouterImpl {
   router: RouterType[];
+  private lastURL = '';
   constructor() {
     this.router = [];
     this.notFoundComponent = () => {};
@@ -87,7 +88,13 @@ export default class Router implements RouterImpl {
   };
 
   route = (): void => {
-    const { pathname } = window.location;
+    const { pathname, search } = window.location;
+
+    const URL = `${pathname}${search}`;
+    if (this.lastURL === URL) {
+      return;
+    }
+    this.lastURL = URL;
 
     // parse query
     const query = this.getUrlQuery();
