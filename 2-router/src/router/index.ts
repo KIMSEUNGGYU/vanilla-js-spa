@@ -1,3 +1,4 @@
+import { $ } from '../utils/dom';
 import { Obj, Component } from '../types';
 
 const CHANGE_ROUTE_EVENT = 'urlChange';
@@ -22,7 +23,22 @@ export default class Router implements RouterImpl {
     this.notFoundComponent = () => {};
     window.addEventListener(CHANGE_ROUTE_EVENT, this.route);
     window.addEventListener('popstate', this.route); // 뒤로 가기 이벤트 등록
+    this.addLinkEvent(); // 등록된 링크를 처리하기 위한 이벤트 등록
   }
+
+  // ❓ THINK : 해당 함수를 어떻게 테스트 할 수 있을끼?
+  private addLinkEvent = () => {
+    ($('body') as HTMLBodyElement).addEventListener('click', (event: any) => {
+      const { target } = event;
+
+      if (target.matches('*[data-navigate]')) {
+        event.preventDefault();
+        const { navigate } = target?.dataset;
+
+        this.changeRoute(navigate);
+      }
+    });
+  };
 
   // ❓ THINK : (jest에서) private 인데 어떻게 접근이 가능하지? (브라우저는 접근 불가)
   private notFoundComponent: () => void;

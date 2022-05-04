@@ -9,16 +9,6 @@ const pages = Pages($('#root') as Target);
 
 const router = new Router();
 
-$('header > nav > ul')?.addEventListener('click', (event: any) => {
-  const { target } = event;
-
-  if (target.matches('button[data-navigate]')) {
-    const { navigate } = target?.dataset;
-
-    router.changeRoute(navigate);
-  }
-});
-
 router //
   .addRoute('/', pages.home)
   .addRoute('/posts', pages.posts)
