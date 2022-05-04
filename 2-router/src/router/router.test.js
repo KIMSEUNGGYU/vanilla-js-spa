@@ -221,4 +221,30 @@ describe('router', () => {
       });
     });
   });
+
+  context('route function 유닛테스트 - 여러 번 URL 을 요청한 경우', () => {
+    it('동일한 URL 인 경우 - 한 번만 호출한다.', () => {
+      router.addRoute('/users', componentMock);
+
+      changePath('/users', '');
+      router.route();
+      changePath('/users', '');
+      router.route();
+
+      expect(componentMock).toBeCalledTimes(1);
+    });
+
+    it('다른 URL을 요청한 경우 - 여러 번 호출한다.', () => {
+      router.addRoute('/users', componentMock);
+
+      changePath('/users', '');
+      router.route();
+      changePath('/users', '?username=gyu');
+      router.route();
+      changePath('/users', '?username=gyu&age=28');
+      router.route();
+
+      expect(componentMock).toBeCalledTimes(3);
+    });
+  });
 });
