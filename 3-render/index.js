@@ -18,9 +18,19 @@ const state = {
   currentFilter: 'All', // All, Active, Completed
 };
 
-window.requestAnimationFrame(() => {
-  const $main = $('.todoapp');
-  // const $newMain = appView({ $target: $main, state }); // $main을 복사해서 적용된 DOM 을 반환
-  const $newMain = registry.renderRoot({ $target: $main, state }); // $main을 복사해서 적용된 DOM 을 반환
-  $main.replaceWith($newMain); // 적용된 DOM 으로 대체
-});
+const render = () => {
+  window.requestAnimationFrame(() => {
+    const $main = $('.todoapp');
+    // const $newMain = appView({ $target: $main, state }); // $main을 복사해서 적용된 DOM 을 반환
+    const $newMain = registry.renderRoot({ $target: $main, state }); // $main을 복사해서 적용된 DOM 을 반환
+    $main.replaceWith($newMain); // 적용된 DOM 으로 대체
+  });
+};
+
+// 동적 데이터 렌더링
+// setInterval(() => {
+//   state.todos = getTodos();
+//   render();
+// }, 3000);
+
+render();
