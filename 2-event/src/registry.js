@@ -3,9 +3,9 @@ import { $$ } from './utils/dom.js';
 // 레지시트리는 앱에서 사용할 수 있는 모든 구성요소(컴포넌트)
 const registry = {};
 
-const renderWrapper = ({ component }) => {
-  return ({ $target, state }) => {
-    const $element = component({ $target, state });
+const renderWrapper = (component) => {
+  return ($target, state) => {
+    const $element = component($target, state);
 
     const $childComponents = $$('[data-component]', $element);
 
@@ -17,23 +17,24 @@ const renderWrapper = ({ component }) => {
         return;
       }
 
-      target.replaceWith(child({ $target: target, state }));
+      // child 는 component
+      target.replaceWith(child(target, state));
     });
 
     return $element;
   };
 };
 
-const add = ({ name, component }) => {
-  registry[name] = renderWrapper({ component });
+const add = (name, component) => {
+  registry[name] = renderWrapper(component);
 };
 
-const renderRoot = ({ $target, state }) => {
-  const cloneComponent = ({ $target }) => {
+const renderRoot = ($target, state) => {
+  const cloneComponent = ($target) => {
     return $target.cloneNode(true);
   };
 
-  return renderWrapper({ component: cloneComponent })({ $target, state });
+  return renderWrapper(cloneComponent)($target, state);
 };
 
 export default {

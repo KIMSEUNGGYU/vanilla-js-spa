@@ -1,6 +1,6 @@
 import { $$ } from '../utils/dom.js';
 
-export default ({ $target, state: { currentFilter } }) => {
+export default ($target, { currentFilter }) => {
   const $element = $target.cloneNode(true);
 
   Array.from($$('li a', $element)) //

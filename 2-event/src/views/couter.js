@@ -8,7 +8,7 @@ const getTodoCount = (todos) => {
     : `${length} Items left`;
 };
 
-export default ({ $target, state: { todos } }) => {
+export default ($target, { todos }) => {
   const $element = $target.cloneNode(true);
 
   $element.textConent = getTodoCount(todos);

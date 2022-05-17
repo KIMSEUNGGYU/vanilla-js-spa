@@ -11,10 +11,10 @@ import todosView from './src/views/todos.js';
 import counterView from './src/views/couter.js';
 import filtersView from './src/views/filters.js';
 
-registry.add({ name: 'app', component: appView });
-registry.add({ name: 'todos', component: todosView });
-registry.add({ name: 'counter', component: counterView });
-registry.add({ name: 'filters', component: filtersView });
+registry.add('app', appView);
+registry.add('todos', todosView);
+registry.add('counter', counterView);
+registry.add('filters', filtersView);
 
 const state = {
   todos: getTodos(), // todo[]:  { text: '', completed: boolean}
@@ -24,7 +24,7 @@ const state = {
 const render = () => {
   window.requestAnimationFrame(() => {
     const $main = $('#root');
-    const $newMain = registry.renderRoot({ $target: $main, state }); // $main을 복사해서 적용된 DOM 을 반환
+    const $newMain = registry.renderRoot($main, state); // $main을 복사해서 적용된 DOM 을 반환
 
     // $main.replaceWith($newMain); // 적용된 DOM 으로 대체 (diff 알고리즘 대체 전으로 모든 DOM 을 대체)
     applyDiff(document.body, $main, $newMain); // diff 알고리즘 적용 (diff 알고리즘 적용으로 변경된 부분만 변경)

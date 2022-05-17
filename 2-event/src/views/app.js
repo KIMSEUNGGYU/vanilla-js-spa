@@ -10,7 +10,7 @@ const createAppElement = () => {
   return template.content.firstElementChild.cloneNode(true);
 };
 
-export default ({ $target }) => {
+export default ($target) => {
   const $element = $target.cloneNode(true);
   $element.innerHTML = '';
   $element.appendChild(createAppElement());

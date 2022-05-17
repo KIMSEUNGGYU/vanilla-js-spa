@@ -17,7 +17,7 @@ const getTodoElement = (todo) => {
     `;
 };
 
-export default ({ $target, state }) => {
+export default ($target, state) => {
   const { todos } = state;
 
   const $element = $target.cloneNode(true);
