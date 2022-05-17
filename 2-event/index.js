@@ -21,10 +21,25 @@ const state = {
   currentFilter: 'All', // All, Active, Completed
 };
 
+const events = {
+  deleteItem: (index) => {
+    state.todos.splice(index, 1);
+    render();
+  },
+  addItem: (text) => {
+    state.todos.push({
+      text,
+      completed: false,
+    });
+    render();
+  },
+};
+
 const render = () => {
   window.requestAnimationFrame(() => {
     const $main = $('#root');
-    const $newMain = registry.renderRoot($main, state); // $main을 복사해서 적용된 DOM 을 반환
+
+    const $newMain = registry.renderRoot($main, state, events); // $main을 복사해서 적용된 DOM 을 반환
 
     // $main.replaceWith($newMain); // 적용된 DOM 으로 대체 (diff 알고리즘 대체 전으로 모든 DOM 을 대체)
     applyDiff(document.body, $main, $newMain); // diff 알고리즘 적용 (diff 알고리즘 적용으로 변경된 부분만 변경)

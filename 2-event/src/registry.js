@@ -4,8 +4,9 @@ import { $$ } from './utils/dom.js';
 const registry = {};
 
 const renderWrapper = (component) => {
-  return ($target, state) => {
-    const $element = component($target, state);
+  // renderWrapper(cloneComponent)($target, state, events)
+  return ($target, state, events) => {
+    const $element = component($target, state, events);
 
     const $childComponents = $$('[data-component]', $element);
 
@@ -18,7 +19,7 @@ const renderWrapper = (component) => {
       }
 
       // child 는 component
-      target.replaceWith(child(target, state));
+      target.replaceWith(child(target, state, events));
     });
 
     return $element;
@@ -29,12 +30,12 @@ const add = (name, component) => {
   registry[name] = renderWrapper(component);
 };
 
-const renderRoot = ($target, state) => {
+const renderRoot = ($target, state, events) => {
   const cloneComponent = ($target) => {
     return $target.cloneNode(true);
   };
 
-  return renderWrapper(cloneComponent)($target, state);
+  return renderWrapper(cloneComponent)($target, state, events);
 };
 
 export default {
