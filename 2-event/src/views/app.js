@@ -1,20 +1,18 @@
-import { $ } from '../utils/dom.js';
+let template;
 
-// view
-import todosView from './todos.js';
-import counterView from './couter.js';
-import filtersView from './filters.js';
+const createAppElement = () => {
+  if (!template) {
+    // template 에 있는 템플릿을 가져옴
+    template = document.getElementById('todo-app');
+  }
 
-export default ({ $target, state }) => {
+  // 템플릿 첫번째 하위 요소가 실제 DOM 정보
+  return template.content.firstElementChild.cloneNode(true);
+};
+
+export default ({ $target }) => {
   const $element = $target.cloneNode(true);
-
-  const $list = $('.todo-list', $element);
-  const $counter = $('.todo-count', $element);
-  const $filters = $('.filters', $element);
-
-  $list.replaceWith(todosView({ $target: $list, state }));
-  $counter.replaceWith(counterView({ $target: $counter, state }));
-  $filters.replaceWith(filtersView({ $target: $filters, state }));
-
+  $element.innerHTML = '';
+  $element.appendChild(createAppElement());
   return $element;
 };
