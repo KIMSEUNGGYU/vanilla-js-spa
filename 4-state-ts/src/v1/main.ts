@@ -5,7 +5,10 @@ import Counter from './components/counter';
 
 new Counter(
   document.querySelector<HTMLDivElement>('#app')!, //
-  { number: 0 },
+  {
+    number: 0,
+    diffNumber: 1,
+  },
 );
 
 console.log('!! EXE v1 main !!');
