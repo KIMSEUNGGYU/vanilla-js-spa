@@ -16,6 +16,7 @@ export default class Counter implements Component {
   $target: Element;
   $element: Element;
   state: any;
+  eventBus: any;
   constructor($target: Element, initialState: any) {
     this.state = initialState;
 
@@ -29,7 +30,7 @@ export default class Counter implements Component {
     this.registerEvent();
   }
 
-  setState(newState: { count: number }): void {
+  setState(newState: { number: number }): void {
     this.state = {
       ...this.state,
       ...newState,
@@ -38,31 +39,30 @@ export default class Counter implements Component {
     this.render();
   }
 
-  render(): void {
-    const { count } = this.state;
+  render = () => {
+    const { number } = this.state;
 
     this.$element.innerHTML = `
       <h1>COUNTER!</h1>
           <div class="counter">
           <button>+1</button>
-              <span>${count}</span>
+              <span>${number}</span>
           <button>-1</button>
       </div>
     `;
-  }
+  };
 
   registerEvent(): void {
     this.$element.addEventListener('click', (event) => {
-      let { count } = this.state;
-
       const target = event.target as Element;
+
       if (target.matches('button')) {
         if (target.textContent === '+1') {
-          this.setState({ count: count + 1 });
+          this.setState({ number: this.state.number + 1 });
         }
 
         if (target.textContent === '-1') {
-          this.setState({ count: count - 1 });
+          this.setState({ number: this.state.number - 1 });
         }
       }
     });
