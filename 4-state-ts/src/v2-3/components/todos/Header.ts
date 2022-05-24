@@ -1,3 +1,7 @@
+import { todosStore } from '../../modules';
+
+import { addItem } from '../../modules/todos';
+
 interface Component {
   $target: Element;
   $element: Element;
@@ -31,12 +35,21 @@ export default class Header implements Component {
 
   render = () => {
     this.$element.innerHTML = `
-      <header class="header">
-        <h1>todos</h1>
-        <input class="new-todo" placeholder="What needs to be done?" autofocus />
-      </header>
+      <h1>todos</h1>
+      <input class="new-todo" placeholder="What needs to be done?" autofocus />
     `;
   };
 
-  registerEvent(): void {}
+  registerEvent(): void {
+    this.$element.addEventListener('keypress', (event: Event) => {
+      const target = event.target as HTMLInputElement;
+
+      // 🐛 event.key 를 갖는 이벤트는 뭐지? 이벤트 타입 어떻게 처리?
+      if (target.matches('input') && event.key === 'Enter' && target.value !== '') {
+        todosStore.dispatch(addItem(target.value));
+        target.value = '';
+        target.focus();
+      }
+    });
+  }
 }

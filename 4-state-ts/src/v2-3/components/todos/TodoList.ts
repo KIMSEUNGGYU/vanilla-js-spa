@@ -1,3 +1,5 @@
+import { todosStore } from '../../modules';
+
 interface Component {
   $target: Element;
   $element: Element;
@@ -18,7 +20,6 @@ export default class TodoList implements Component {
     this.$element = document.createElement('section');
     this.$element.className = 'main';
 
-    // this.$target.innerHTML = '';
     this.$target.appendChild(this.$element);
 
     // calls
@@ -30,26 +31,26 @@ export default class TodoList implements Component {
   }
 
   render = () => {
+    const { todos } = todosStore.getState();
+
     this.$element.innerHTML = `
       <input id="toggle-all" class="toggle-all" type="checkbox" />
       <label for="toggle-all"> Mark all as complete </label>
       <ul class="todo-list" data-component="todos">
-        <li class="completed" >
-            <div class="view">
-                <input class="toggle" type="checkbox" checked />
-                <label>text</label>
+        ${todos
+          .map(
+            (todo: { text: string; completed: boolean }) => `
+            <li class= "${todo.completed ? 'completed' : ''}">
+              <div class="view">
+                <input class="toggle" type="checkbox" "${todo.completed ? 'checked' : ''}" />
+                <label>${todo.text}</label>
                 <button class="destroy"></button>
-            </div>
+              </div>
             <input class="edit" value="text" />
-        </li>
-        <li>
-            <div class="view">
-                <input class="toggle" type="checkbox" />
-                <label>text</label>
-                <button class="destroy"></button>
-            </div>
-            <input class="edit" value="text" />
-        </li>
+            </li>
+          `,
+          )
+          .join('')}
     </ul>
     `;
   };

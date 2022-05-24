@@ -1,4 +1,4 @@
-import counterStore from '../../modules'; //redux createStore
+import { counterStore } from '../../modules'; //redux createStore
 
 import { increase, decrease, applyDiff } from '../../modules/counter'; // counter state 변경 이벤트 (액션 생성 함수)
 
@@ -20,6 +20,7 @@ export default class Counter implements Component {
 
     this.$target = $target;
     this.$element = document.createElement('div');
+    this.$element.className = 'counterapp';
     this.$target.innerHTML = '';
     this.$target.appendChild(this.$element);
 
@@ -33,6 +34,8 @@ export default class Counter implements Component {
 
   render = () => {
     const { number, diffNumber } = counterStore.getState();
+
+    console.log('render', number, diffNumber);
 
     this.$element.innerHTML = `
       <h1>COUNTER!</h1>

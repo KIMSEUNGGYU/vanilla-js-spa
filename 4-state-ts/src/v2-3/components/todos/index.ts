@@ -19,15 +19,13 @@ export default class Todos implements Component {
     this.state = initialState;
 
     this.$target = $target;
+
     this.$element = document.createElement('div');
+    this.$element.innerHTML = '';
     this.$element.className = 'todoapp';
 
-    this.$target.innerHTML = '';
+    // this.$target.innerHTML = '';
     this.$target.appendChild(this.$element);
-
-    new Header(this.$element, {});
-    new TodoList(this.$element, {});
-    new Footers(this.$element, {});
 
     // calls
     this.render();
@@ -38,36 +36,10 @@ export default class Todos implements Component {
   }
 
   render = () => {
-    // this.$element.appendChild(new Header());
-    // this.$element.innerHTML = `
-    //   <h1>TODO-LIST</h1>
-    //   <div class="todoapp">
-    //     <header class="header">
-    //       <h1>todos</h1>
-    //       <input class="new-todo" placeholder="What needs to be done?" autofocus />
-    //     </header>
-    //     <section class="main">
-    //       <input id="toggle-all" class="toggle-all" type="checkbox" />
-    //       <label for="toggle-all"> Mark all as complete </label>
-    //       <ul class="todo-list" data-component="todos"></ul>
-    //     </section>
-    //     <footer class="footer">
-    //       <span class="todo-count" data-component="counter">0 Items left</span>
-    //       <ul class="filters" data-component="filters">
-    //         <li>
-    //           <a href="#/">All</a>
-    //         </li>
-    //         <li>
-    //           <a href="#/active">Active</a>
-    //         </li>
-    //         <li>
-    //           <a href="#/completed">Completed</a>
-    //         </li>
-    //       </ul>
-    //       <button class="clear-completed">Clear completed</button>
-    //     </footer>
-    //   </div>
-    // `;
+    this.$element.innerHTML = '';
+    new Header(this.$element, {});
+    new TodoList(this.$element, {});
+    new Footers(this.$element, {});
   };
 
   registerEvent(): void {}
