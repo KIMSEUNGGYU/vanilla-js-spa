@@ -1,4 +1,4 @@
-import { todosStore } from '../../modules';
+import { store } from '../../main';
 
 import { addItem } from '../../modules/todos';
 
@@ -46,7 +46,7 @@ export default class Header implements Component {
 
       // 🐛 event.key 를 갖는 이벤트는 뭐지? 이벤트 타입 어떻게 처리?
       if (target.matches('input') && event.key === 'Enter' && target.value !== '') {
-        todosStore.dispatch(addItem(target.value));
+        store.dispatch(addItem(target.value));
         target.value = '';
         target.focus();
       }

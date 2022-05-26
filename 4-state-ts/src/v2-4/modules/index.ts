@@ -1,10 +1,9 @@
-import { createStore } from '../core/store';
+// multi 리듀서
 
-// counter reducer
 import counterReducer from './counter';
-const counterStore = createStore(counterReducer());
-export { counterStore };
-
 import todosReducer from './todos';
-const todosStore = createStore(todosReducer());
-export { todosStore };
+
+export {
+  counterReducer, //
+  todosReducer,
+};

@@ -1,4 +1,4 @@
-import { todosStore } from '../../modules';
+import { store } from '../../main';
 
 interface Component {
   $target: Element;
@@ -31,7 +31,7 @@ export default class TodoList implements Component {
   }
 
   render = () => {
-    const { todos } = todosStore.getState();
+    const { todos } = store.getState().todos;
 
     this.$element.innerHTML = `
       <input id="toggle-all" class="toggle-all" type="checkbox" />

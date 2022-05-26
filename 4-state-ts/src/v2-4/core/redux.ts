@@ -46,27 +46,28 @@ export default class Store {
   };
 }
 
+// 단일 및 복수 리듀서 생성
+// 복수 리듀서인 경우 combineReducers 를 통해 생성
 export const createStore = (reducer: Function) => {
   const store = new Store(reducer);
 
   return store;
 };
 
-export const combinReducers = (reducers) => {
+export const combinReducers = (reducers: any) => {
   const reducerKeys = Object.keys(reducers);
   const finalReducers = {};
 
   reducerKeys.forEach((key) => {
     if (typeof reducers[key] === 'function') {
-      finalReducers[key] = reducers;
+      finalReducers[key] = reducers[key];
     }
   });
 
   const finalReducerKeys = Object.keys(finalReducers);
 
-  return function combination(state, action) {
-    let hasChanged = false;
-
+  // multi reducer
+  return function combination(state = {}, action = {}) {
     const nextState = {};
 
     finalReducerKeys.forEach((key) => {
@@ -75,13 +76,8 @@ export const combinReducers = (reducers) => {
       const nextStateForKey = reducer(prevStateForKey, action);
 
       nextState[key] = nextStateForKey;
-      hasChanged = hasChanged || nextStateForKey !== prevStateForKey;
-
-      hasChanged = hasChanged || finalReducerKeys.length !== Object.keys(state).length;
     });
 
-    hasChanged = hasChanged || finalReducerKeys.length !== Object.keys(state).length;
-
-    return hasChanged ? nextState : state;
+    return nextState;
   };
 };

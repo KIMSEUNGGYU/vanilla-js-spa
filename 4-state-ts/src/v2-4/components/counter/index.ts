@@ -1,4 +1,5 @@
-import { counterStore } from '../../modules'; //redux createStore
+// 💡 TODO-GYU: store 를 어디서 선언할지 !!
+import { store } from '../../main';
 
 import { increase, decrease, applyDiff } from '../../modules/counter'; // counter state 변경 이벤트 (액션 생성 함수)
 
@@ -33,7 +34,7 @@ export default class Counter implements Component {
   }
 
   render = () => {
-    const { number, diffNumber } = counterStore.getState();
+    const { number, diffNumber } = store.getState().counter;
 
     this.$element.innerHTML = `
       <h1>COUNTER!</h1>
@@ -54,11 +55,11 @@ export default class Counter implements Component {
 
       if (target.matches('button')) {
         if (target.textContent === '+1') {
-          counterStore.dispatch(increase());
+          store.dispatch(increase());
         }
 
         if (target.textContent === '-1') {
-          counterStore.dispatch(decrease());
+          store.dispatch(decrease());
         }
       }
     });
@@ -67,7 +68,7 @@ export default class Counter implements Component {
       const target = event.target as HTMLInputElement;
 
       if (target.matches('input')) {
-        counterStore.dispatch(applyDiff(+target.value));
+        store.dispatch(applyDiff(+target.value));
       }
     });
   }
