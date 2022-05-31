@@ -7,6 +7,7 @@ import { increase } from './modules/counter';
 import { addItem } from './modules/todos';
 
 // 임시 컴포넌트 구조
+import Number from './components/number';
 import Counter from './components/counter';
 import TodoList from './components/todos';
 
@@ -34,17 +35,21 @@ const store = createStore(rootReducer);
 
 // 멀티 리듀서 서비스 적용
 function calls() {
-  const counter = new Counter(
+  const number = new Number(
     document.querySelector<HTMLDivElement>('#app')!, //
-    { count: 0 },
+    { number: 0 },
   );
-  store.subscribe(counter.render);
 
-  const todoList = new TodoList(
-    document.querySelector('#app')!, //
-    {},
-  );
-  store.subscribe(todoList.render);
+  // const counter = new Counter(
+  //   document.querySelector<HTMLDivElement>('#app')!, //
+  //   { number: 0, diffNumber: 1 },
+  // );
+  // store.subscribe(counter.render);
+  // const todoList = new TodoList(
+  //   document.querySelector('#app')!, //
+  //   {},
+  // );
+  // store.subscribe(todoList.render);
 }
 calls();
 

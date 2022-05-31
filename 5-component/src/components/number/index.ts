@@ -1,4 +1,5 @@
-export default class Counter {
+let renderCount = 0;
+export default class Number {
   $target: Element;
   $element: Element;
   state: any;
@@ -16,6 +17,8 @@ export default class Counter {
   }
 
   setState = (nextState) => {
+    console.log(this.state, nextState);
+
     this.state = {
       ...this.state,
       ...nextState,
@@ -34,24 +37,19 @@ export default class Counter {
   };
 
   render = () => {
-    const { number, diffNumber } = this.state;
+    const { number } = this.state;
+
+    const $prevNode = this.$element.cloneNode(true);
 
     const template = `
-    <div>    
-      <h1>COUNTER!</h1>
-      <div class="counter">
-        <div>
-          <input type="number" value="${diffNumber}" min="1" />
-        </div>
-        <button>+1</button>
-        <span>${number}</span>
-        <button>-1</button>
-      </div>
-    </div>
+      <button>${number}</button>
+      <h3>renderCount: ${renderCount}</h3>
     `;
 
     // TODO-GYU: DOM 노드 파싱후 diff 알고리즘 적용
+    console.log('after', $prevNode, this.$element);
 
+    renderCount++;
     this.$element.innerHTML = template.trim();
   };
 
@@ -60,26 +58,9 @@ export default class Counter {
       const target = event.target as Element;
 
       if (target.matches('button')) {
-        if (target.textContent === '+1') {
-          this.setState({
-            number: this.state.number + this.state.diffNumber,
-          });
-        }
-
-        if (target.textContent === '-1') {
-          this.setState({
-            number: this.state.number - this.state.diffNumber,
-          });
-        }
-      }
-    });
-
-    this.$element.addEventListener('change', (event) => {
-      const target = event.target as HTMLInputElement;
-
-      if (target.matches('input')) {
         this.setState({
-          diffNumber: +target.value,
+          //   number: renderCount % 2 === 0 ? this.state.number + 1 : this.state.number,
+          number: this.state.number + 1,
         });
       }
     });
