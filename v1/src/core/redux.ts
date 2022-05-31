@@ -56,7 +56,7 @@ export const createStore = (reducer: Function) => {
 
 export const combinReducers = (reducers: any) => {
   const reducerKeys = Object.keys(reducers);
-  const finalReducers = {};
+  const finalReducers: { [key: string]: Function } = {};
 
   reducerKeys.forEach((key) => {
     if (typeof reducers[key] === 'function') {
@@ -66,14 +66,17 @@ export const combinReducers = (reducers: any) => {
 
   const finalReducerKeys = Object.keys(finalReducers);
 
-  // multi reducer
+  // multi reducer (root reducer)
+  // state === prevState
   return function combination(state = {}, action = {}) {
     const nextState = {};
 
+    console.log('fin', finalReducerKeys, finalReducers, state, action);
+
     finalReducerKeys.forEach((key) => {
       const reducer = finalReducers[key];
-      const prevStateForKey = state[key];
-      const nextStateForKey = reducer(prevStateForKey, action);
+      const prevStateForKey = state[key]; // 해당 리듀서(key)의 이전 값
+      const nextStateForKey = reducer(prevStateForKey, action); // 해당 리듀서의 액션 후 상태 값
 
       nextState[key] = nextStateForKey;
     });

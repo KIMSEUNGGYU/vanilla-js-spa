@@ -1,10 +1,10 @@
+// redux 적용 패턴
+
 import './style.css';
 
 import { createStore, combinReducers } from './core/redux';
 
 import { counterReducer, todosReducer } from './modules';
-import { increase } from './modules/counter';
-import { addItem } from './modules/todos';
 
 // 임시 컴포넌트 구조
 import Counter from './components/counter';

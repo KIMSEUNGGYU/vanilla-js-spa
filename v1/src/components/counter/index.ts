@@ -1,18 +1,8 @@
-// 💡 TODO-GYU: store 를 어디서 선언할지 !!
 import { store } from '../../main';
 
-import { increase, decrease, applyDiff } from '../../modules/counter'; // counter state 변경 이벤트 (액션 생성 함수)
+import { increase, decrease, applyDiff } from '../../modules/counter';
 
-interface Component {
-  $target: Element;
-  $element: Element;
-  state: any; // 다양한 형태 올 수 있음?을 타입으로?
-
-  render(): void;
-  registerEvent(): void;
-}
-
-export default class Counter implements Component {
+export default class Counter {
   $target: Element;
   $element: Element;
   state: any;
@@ -26,17 +16,22 @@ export default class Counter implements Component {
     this.$target.appendChild(this.$element);
 
     // calls
+    this.componentDidMount();
+  }
+
+  componentDidMount = () => {
     this.render();
     this.registerEvent();
+  };
 
-    // TODO-GYU: 컴포넌트에 자동으로 등록하는 방법은 없을까?? (상태가 변경되면 자동 렌더링) : main.ts 에서 처리 가능
-    // counterStore.subscribe(this.render);
-  }
+  componentDidUpdate = () => {
+    this.render();
+  };
 
   render = () => {
     const { number, diffNumber } = store.getState().counter;
 
-    this.$element.innerHTML = `
+    const template = `
       <h1>COUNTER!</h1>
       <div class="counter">
         <div>
@@ -47,6 +42,10 @@ export default class Counter implements Component {
         <button>-1</button>
       </div>
     `;
+
+    // TODO-GYU: DOM 노드 파싱후 diff 알고리즘 적용
+
+    this.$element.innerHTML = template;
   };
 
   registerEvent(): void {
